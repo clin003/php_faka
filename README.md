@@ -17,6 +17,7 @@ docker-compose
 
 mysql redis 服务器地址 填 host.docker.internal
 
+
 ##  环境准备
 debian系统
 ```bash
