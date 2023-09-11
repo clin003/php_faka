@@ -1,0 +1,16 @@
+version: "3"
+services:
+  epusdt:
+    image:  baicailin/epusdt:alpine
+    container_name: "epusdt"
+    restart: always
+    # build: 
+    #   context: .
+    #   dockerfile: Dockerfile_alpine
+    #command: /app/api_client_linux -c=/app/conf/config.yaml
+    volumes:
+      - ./.env.example:/app/.env
+    ports:
+      - "8000:8000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

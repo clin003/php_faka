@@ -1,0 +1,62 @@
+version: "3"
+services:
+  nginx:
+    container_name: "nginx"
+    restart: always
+    ports:
+      - "80:80"
+    image: nginx:bookworm
+    # depends_on:
+    #   - myphp
+    #   - mydb
+    volumes:     
+      - ./conf.d:/etc/nginx/conf.d
+      - ./logs:/var/log/nginx
+      - ./iwww/acg-faka:/iwww/acg
+      - ./iwww/dujiaoka:/iwww/dujiaoka
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    # networks:
+    #   - app_myphp_fpm
+  myacg:
+    build: ./php-mysqli
+    image: php:8.2-fpm-mysqli_5
+    container_name: "myacg"
+    hostname: myphp-fpm
+    restart: always
+    ports:
+      - "9000:9000"
+    # networks:
+    #   - app_myphp_fpm      
+    volumes:
+      - ./iwww/acg-faka:/iwww/acg:rw
+      #- ./php/conf.d:/usr/local/etc/php/conf.d
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  mydujiao:
+    build: ./iwww/dujiaoka
+    # build: ./php-debian
+    # build: ./iwww/dujiaoka
+    # build: 
+    #   context: .
+    #   dockerfile: Dockerfile_alpine
+    image: php_debian
+    container_name: "mydujiao"
+    # command: php /iwww/dujiaoka/artisan queue:work
+    ports:
+      - "8081:80"
+      - "9001:9000"
+    # volumes:
+      # - ./iwww/dujiaoka:/iwww/dujiaoka:rw
+      # - ./iwww/dujiaoka_phpfpm/php.ini:/etc/php/7.4/fpm/php.ini:rw
+      # - ./iwww/dujiaoka_phpfpm/www.conf:/etc/php/7.4/fpm/pool.d/www.conf:rw
+    environment:
+      WEB_DOCUMENT_ROOT: "/app/public"
+    tty: true
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+# networks:
+#   app_myphp_fpm:
+#     external: true
+# networks:
+#   app_myphp_fpm: {}

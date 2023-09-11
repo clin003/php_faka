@@ -1,0 +1,5 @@
+.DS_Store
+db_mysql/data_db
+db_redis/data_db
+nginx/iwww
+nginx/logs

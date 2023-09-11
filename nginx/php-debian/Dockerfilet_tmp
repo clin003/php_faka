@@ -1,0 +1,25 @@
+FROM debian:bookworm
+
+RUN     apt update \
+        && apt install -y \
+        php php-fpm php-mysql php-redis \
+        php-gd php-zip php-opcache php-curl php-mbstring php-intl php-dom php-bcmath php-fileinfo
+        libfreetype-dev \
+		libjpeg62-turbo-dev \		
+        zlib1g-dev libzip-dev \
+        libwebp-dev libjpeg-dev libpng-dev libfreetype6-dev \
+        
+        && docker-php-ext-configure gd --with-freetype --with-jpeg \
+	    && docker-php-ext-install -j$(nproc) gd \
+        && docker-php-ext-install pdo_mysql  && docker-php-ext-enable pdo_mysql  \
+        && docker-php-ext-install mysql  && docker-php-ext-enable mysql  \
+        && docker-php-ext-install redis  && docker-php-ext-enable redis  \
+        && docker-php-ext-install curl  && docker-php-ext-enable curl  \
+        && docker-php-ext-install mbstring  && docker-php-ext-enable mbstring  \
+        && docker-php-ext-install intl  && docker-php-ext-enable intl  \
+        && docker-php-ext-install dom  && docker-php-ext-enable dom  \
+        && docker-php-ext-install bcmath  && docker-php-ext-enable bcmath  \
+        && docker-php-ext-install fileinfo  && docker-php-ext-enable fileinfo  \
+        && docker-php-ext-install zip && docker-php-ext-enable zip \
+        && docker-php-ext-install opcache  && docker-php-ext-enable opcache  \
+        && mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
