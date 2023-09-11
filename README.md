@@ -13,6 +13,9 @@ docker-compose
 
 在 nginx/docker-compose.yaml 中注释掉不搭建的其中之一.
 
+##  安装提醒
+
+mysql redis 服务器地址 填 host.docker.internal
 
 ##  环境准备
 debian系统
